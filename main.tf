@@ -4,14 +4,14 @@ provider "aws" {
   secret_key = var.aws_secret_key
 }
 
-#VPC
+#-------------------------------VPC-------------------------------
 
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
   instance_tenancy = "default"
 }
 
-#INTERNET GATEWAY
+#-------------------------------INTERNET GATEWAY-------------------------------
 
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
@@ -21,7 +21,7 @@ resource "aws_internet_gateway" "gw" {
   }
 }
 
-#SUBNET
+#-------------------------------SUBNET-------------------------------
 
 resource "aws_subnet" "subnet_1" {
   vpc_id            = aws_vpc.main.id
@@ -29,7 +29,7 @@ resource "aws_subnet" "subnet_1" {
   cidr_block        = "10.0.1.0/24"
 }
 
-#EC2
+#-------------------------------EC2-------------------------------
 
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -57,7 +57,7 @@ resource "aws_instance" "ec2" {
   }
 }
 
-#LOAD BALANCER
+#-------------------------------LOAD BALANCER-------------------------------
 
 resource "aws_elb" "load_balancer" {
   subnets     = [aws_subnet.subnet_1.id]
